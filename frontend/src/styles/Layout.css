@@ -1,0 +1,566 @@
+:root {
+  --apple-blue: #007AFF;
+  --apple-gray: #8E8E93;
+  --apple-light-gray: rgba(242, 242, 247, 0.6);
+  --apple-border: rgba(229, 229, 234, 0.5);
+  --sidebar-width: 280px;
+  --common-blur: blur(12px);
+  --common-radius: 12px;
+  --common-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --common-bg: rgba(255, 255, 255, 0.6);
+}
+
+/* Reset body and prevent scrolling */
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  padding-bottom: 30px;
+}
+
+.header {
+  background-color: transparent;
+  backdrop-filter: var(--common-blur);
+  color: #000;
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  height: 44px;
+  z-index: 12;
+  border: none;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+}
+
+h1 {
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.main-content {
+  position: relative;
+  flex: 1;
+  overflow: hidden;
+}
+
+.map-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 30px;
+  width: 100vw;
+  height: calc(100vh - 44px - 30px);
+}
+
+.sidebar {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  bottom: calc(1rem + 30px);
+  width: var(--sidebar-width);
+  background: var(--common-bg);
+  backdrop-filter: var(--common-blur);
+  z-index: 10;
+  padding: 1rem;
+  overflow-y: auto;
+  border-radius: var(--common-radius);
+  box-shadow: var(--common-shadow);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 1;
+  transform: scale(1);
+
+  /* Hide default scrollbar for WebKit browsers */
+  &::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+
+  /* Track */
+  &::-webkit-scrollbar-track {
+    background: transparent;
+    margin: 4px 0;
+  }
+
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 2px;
+    border: 1px solid transparent;
+    background-clip: padding-box;
+  }
+
+  /* Handle on hover */
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid transparent;
+    background-clip: padding-box;
+  }
+
+  /* For Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+}
+
+.sidebar.closed {
+  opacity: 0;
+  transform: scale(0.8);
+  pointer-events: none;
+}
+
+.sidebar-toggle {
+  position: absolute;
+  bottom: calc(1rem + 30px);
+  right: 1rem;
+  background: var(--common-bg);
+  backdrop-filter: var(--common-blur);
+  border: none;
+  padding: 12px 24px;
+  border-radius: var(--common-radius);
+  font-size: 16px;
+  font-weight: 500;
+  color: #000;
+  cursor: pointer;
+  box-shadow: var(--common-shadow);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1000;
+  min-width: 200px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.3px;
+}
+
+.sidebar-toggle:hover {
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  transform: scale(1.02);
+}
+
+.view-mode-selector,
+.date-filters,
+.location-info {
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: var(--common-blur);
+  border-radius: var(--common-radius);
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.view-mode-selector h3,
+.date-filters h3,
+.location-info h3 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: #000;
+}
+
+.toggle-switch {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.toggle-switch input[type="radio"] {
+  display: none;
+}
+
+.toggle-switch label {
+  flex: 1;
+  padding: 8px 12px;
+  text-align: center;
+  background: rgba(242, 242, 247, 0.5);
+  backdrop-filter: blur(5px);
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--apple-gray);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.toggle-switch input[type="radio"]:checked + label {
+  background: rgba(0, 0, 0, 0.1);
+  color: #000;
+  font-weight: 500;
+}
+
+.date-input {
+  margin: 8px 0;
+  background: rgba(242, 242, 247, 0.5);
+  backdrop-filter: blur(5px);
+  border-radius: 8px;
+  padding: 8px;
+}
+
+.date-input label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  color: var(--apple-gray);
+}
+
+.date-input input {
+  width: calc(100% - 16px);
+  padding: 8px;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  background: rgba(255, 255, 255, 0.8);
+  color: #000;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Style the calendar icon */
+.date-input input::-webkit-calendar-picker-indicator {
+  filter: opacity(0.6);
+  cursor: pointer;
+}
+
+.date-input input::-webkit-calendar-picker-indicator:hover {
+  filter: opacity(1);
+}
+
+.deck-tooltip {
+  background: var(--common-bg);
+  backdrop-filter: var(--common-blur);
+  padding: 8px 12px;
+  border-radius: 8px;
+  box-shadow: var(--common-shadow);
+  font-size: 13px;
+  max-width: 250px;
+  line-height: 1.4;
+}
+
+/* Add styles for the sidebar header and close button */
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  color: var(--apple-gray);
+  font-size: 24px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.close-button:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: #000;
+}
+
+/* Add these styles for the xCO2 legend */
+.legend {
+  position: absolute;
+  bottom: calc(1rem + 30px);
+  left: 1rem;
+  background: var(--common-bg);
+  backdrop-filter: var(--common-blur);
+  padding: 8px 12px;
+  border-radius: var(--common-radius);
+  box-shadow: var(--common-shadow);
+  z-index: 9;
+}
+
+.legend h3 {
+  margin: 0 0 4px 0;
+  font-size: 11px;
+  font-weight: 500;
+  color: #000;
+}
+
+.color-scale {
+  width: 200px;
+  height: 6px;
+  background: linear-gradient(to right, 
+    rgb(0, 255, 0),    /* Low xCO2 */
+    rgb(255, 255, 0),  /* Medium xCO2 */
+    rgb(255, 0, 0)     /* High xCO2 */
+  );
+  border-radius: 3px;
+  margin: 4px 0;
+}
+
+.legend .scale-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #666;
+  width: 200px;
+}
+
+/* Add distance scale styles */
+.map-scale {
+  position: absolute;
+  bottom: calc(1rem + 30px);
+  left: calc(1rem + 200px + 2rem);
+  background: var(--common-bg);
+  backdrop-filter: var(--common-blur);
+  padding: 8px 12px;
+  border-radius: var(--common-radius);
+  box-shadow: var(--common-shadow);
+  z-index: 9;
+}
+
+.map-scale h3 {
+  margin: 0 0 4px 0;
+  font-size: 11px;
+  font-weight: 500;
+  color: #000;
+  white-space: nowrap;  /* Keep zoom level on same line */
+}
+
+.scale-bar {
+  width: 100px;
+  height: 2px;
+  background: #666;
+  margin: 4px 0;
+}
+
+.map-scale .scale-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #666;
+  width: 100px;
+}
+
+/* Add styles for the data points section */
+.data-count {
+  font-size: 13px;
+  color: var(--apple-gray);
+  padding: 8px 12px;
+  background: rgba(242, 242, 247, 0.5);
+  backdrop-filter: blur(5px);
+  border-radius: 8px;
+  margin-top: 8px;
+}
+
+.error-message {
+  color: #ff3b30;
+  font-size: 13px;
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: rgba(255, 59, 48, 0.1);
+  border-radius: 8px;
+}
+
+.land-cover-info {
+  margin-top: 10px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+.land-cover-info p {
+  margin: 5px 0;
+}
+
+.land-cover-info strong {
+  color: #007bff;
+}
+
+.land-cover-legend {
+  position: absolute;
+  bottom: calc(1rem + 30px);
+  left: calc(1rem + 200px + 2rem + 100px + 2rem);
+  background: var(--common-bg);
+  backdrop-filter: var(--common-blur);
+  padding: 8px 12px;
+  border-radius: var(--common-radius);
+  box-shadow: var(--common-shadow);
+  z-index: 9;
+}
+
+.land-cover-legend .legend-items.horizontal {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 12px;  /* Space between items */
+  margin-top: 8px;
+}
+
+.land-cover-legend .legend-item {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;  /* Prevent text wrapping */
+}
+
+.land-cover-legend .color-box {
+  width: 12px;
+  height: 12px;
+  margin-right: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+  background-image: linear-gradient(to right, white, white), linear-gradient(to right, var(--color), var(--color));
+  background-clip: padding-box, border-box;
+  position: relative;
+  z-index: 1;
+}
+
+.land-cover-legend h3 {
+  margin: 0 0 4px 0;
+  font-size: 11px;
+  font-weight: 500;
+  color: #000;
+}
+
+.land-cover-legend .legend-item span:last-child {
+  font-size: 11px;
+  color: #666;
+}
+
+.opacity-slider {
+  margin-top: 10px;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.opacity-slider label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 12px;
+  color: #666;
+}
+
+.opacity-slider input[type="range"] {
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  -webkit-appearance: none;
+  background: linear-gradient(to right, #007bff 0%, #007bff 50%, #ddd 50%, #ddd 100%);
+}
+
+.opacity-slider input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid #007bff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.opacity-slider input[type="range"]::-webkit-slider-thumb:hover {
+  background: #007bff;
+}
+
+.source-note {
+  margin-top: 8px;
+  font-size: 11px;
+  color: #666;
+  font-style: italic;
+  text-align: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 8px;
+}
+
+.globe-toggle {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.globe-toggle .switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 20px;
+}
+
+.globe-toggle .switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.globe-toggle .slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 20px;
+}
+
+.globe-toggle .slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+.globe-toggle input:checked + .slider {
+  background-color: #007bff;
+}
+
+.globe-toggle input:checked + .slider:before {
+  transform: translateX(20px);
+}
+
+.globe-toggle .globe-label {
+  font-size: 12px;
+  color: #666;
+}
+
+/* Add these new styles */
+.toggle-container {
+  overflow: hidden;
+  transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  max-height: 0;
+  opacity: 0;
+}
+
+.toggle-container.visible {
+  max-height: 50px;  /* Adjust this value based on your toggle height */
+  opacity: 1;
+}
+
+/* Update the opacity slider styles */
+.opacity-slider-container {
+  overflow: hidden;
+  transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  max-height: 0;
+  opacity: 0;
+}
+
+.opacity-slider-container.visible {
+  max-height: 100px;  /* Adjust based on your slider height + padding */
+  opacity: 1;
+} 

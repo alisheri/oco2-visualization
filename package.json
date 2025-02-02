@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "@deck.gl/core": "^9.0.38",
+    "@deck.gl/layers": "^9.0.38",
+    "@deck.gl/react": "^9.0.38",
+    "d3-scale": "^4.0.2",
+    "deck.gl": "^9.0.38",
+    "mapbox-gl": "^3.9.2",
+    "react-map-gl": "^7.1.8"
+  }
+}
