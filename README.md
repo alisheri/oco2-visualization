@@ -1,4 +1,3 @@
-# oco2-visualization
 # OCO-2 Data Visualization Platform
 
 An interactive web application for visualizing OCO-2 (Orbiting Carbon Observatory-2) satellite data, showing global CO2 measurements through various visualization modes.
